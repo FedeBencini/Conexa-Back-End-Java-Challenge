@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class SwapiClientTest {
+class SwapiClientIntegrationTest {
 
     @Mock
     private RestTemplate restTemplate;
