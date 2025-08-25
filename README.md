@@ -1,0 +1,2 @@
+# Conexa-Back-End-Java-Challenge
+Aplicación Java desarrollada para Desafío de Conexa. Permite listado de People, Films, Starships y Vehicles de manera paginada, así como filtrado por ID y/o nombre. Cuenta con un sistema de autenticación seguro, su correspondiente documentación, y pruebas unitarias y de integración.
