@@ -3,12 +3,16 @@ package com.FedeB.Challenge_Conexa.controller.Authentication;
 import com.FedeB.Challenge_Conexa.dto.Authentication.LoginRequest;
 import com.FedeB.Challenge_Conexa.dto.Authentication.LoginResponse;
 import com.FedeB.Challenge_Conexa.service.Authentication.JwtService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * Controlador para manejar la autenticación de usuarios.
@@ -44,14 +48,18 @@ public class AuthController {
      * @throws BadCredentialsException si las credenciales proporcionadas son inválidas.
      */
     @PostMapping("/auth/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(userDetails);
 
-        return new LoginResponse(token);
+        return ResponseEntity.ok(new LoginResponse(token));
+        } catch (BadCredentialsException e) {
+            Map<String, String> errorResponse = Map.of("error", "Credenciales inválidas");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
     }
 }
 
